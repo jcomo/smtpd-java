@@ -15,7 +15,8 @@ public class Session {
     }
 
     public void sendReply(Reply reply) {
-        output.println(reply.render());
+        output.print(reply.render());
+        output.print("\r\n");
         output.flush();
     }
 
@@ -31,8 +32,12 @@ public class Session {
         messageBuffer.addRecipient(recipient);
     }
 
-    public void receiveData() {
+    public void sendData() {
         messageBuffer.receiveData();
         messageBuffer.done();
+    }
+
+    public void resetMailTransaction() {
+        messageBuffer.reset();
     }
 }

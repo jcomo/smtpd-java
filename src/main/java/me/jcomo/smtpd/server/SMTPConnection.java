@@ -2,13 +2,12 @@ package me.jcomo.smtpd.server;
 
 import me.jcomo.smtpd.command.Command;
 import me.jcomo.smtpd.command.CommandFactory;
+import me.jcomo.smtpd.mailer.SimpleFileMailer;
+import me.jcomo.smtpd.mailer.FileBlobFactory;
 import me.jcomo.smtpd.message.SimpleMessageBuffer;
 import me.jcomo.smtpd.protocol.SMTPProtocol;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class SMTPConnection implements Runnable {
@@ -24,7 +23,8 @@ public class SMTPConnection implements Runnable {
                 final BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
         ) {
             final SMTPProtocol protocol = new SMTPProtocol();
-            final SimpleMessageBuffer messageBuffer = new SimpleMessageBuffer(in);
+            final SimpleFileMailer mailer = new SimpleFileMailer(new FileBlobFactory("/tmp/mail"));
+            final SimpleMessageBuffer messageBuffer = new SimpleMessageBuffer(in, mailer);
             final Session session = new Session(out, messageBuffer);
             final CommandFactory commands = new CommandFactory(session);
 

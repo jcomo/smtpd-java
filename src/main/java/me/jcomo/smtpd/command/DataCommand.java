@@ -16,7 +16,7 @@ public class DataCommand implements Command {
         session.sendReply(new Reply(ReplyCode.DATA_START,
                 "start mail input; end with <CRLF>.<CRLF>"));
 
-        session.receiveData();
+        session.sendData();
         session.sendReply(new Reply(ReplyCode.OK, "OK"));
         return true;
     }

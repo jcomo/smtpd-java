@@ -1,8 +1,8 @@
 package me.jcomo.smtpd.command;
 
-import me.jcomo.smtpd.Reply;
-import me.jcomo.smtpd.ReplyCode;
-import me.jcomo.smtpd.Session;
+import me.jcomo.smtpd.server.Reply;
+import me.jcomo.smtpd.server.ReplyCode;
+import me.jcomo.smtpd.server.Session;
 
 public class HeloCommand implements Command {
     private final Session session;

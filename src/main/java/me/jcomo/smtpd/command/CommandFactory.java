@@ -1,6 +1,6 @@
 package me.jcomo.smtpd.command;
 
-import me.jcomo.smtpd.Session;
+import me.jcomo.smtpd.server.Session;
 
 public class CommandFactory {
     private static final int COMMAND_NAME_LENGTH = 4;
@@ -20,7 +20,7 @@ public class CommandFactory {
             case "RCPT":
                 return new RcptCommand(session, line);
             case "DATA":
-                return new DataCommand(session, line);
+                return new DataCommand(session);
             case "RSET":
                 return new RsetCommand(session);
             case "NOOP":

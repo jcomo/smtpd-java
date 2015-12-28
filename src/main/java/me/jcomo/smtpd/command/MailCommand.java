@@ -1,13 +1,13 @@
 package me.jcomo.smtpd.command;
 
-import me.jcomo.smtpd.Reply;
-import me.jcomo.smtpd.ReplyCode;
-import me.jcomo.smtpd.Session;
+import me.jcomo.smtpd.server.Reply;
+import me.jcomo.smtpd.server.ReplyCode;
+import me.jcomo.smtpd.server.Session;
 
 import java.util.Optional;
 
-import static me.jcomo.smtpd.EmailUtils.parseEmailAddress;
-import static me.jcomo.smtpd.command.StringUtils.isBlank;
+import static me.jcomo.smtpd.util.EmailUtils.parseEmailAddress;
+import static me.jcomo.smtpd.util.StringUtils.isBlank;
 
 public class MailCommand implements Command {
     private static final String MAIL_FROM = "MAIL FROM:";

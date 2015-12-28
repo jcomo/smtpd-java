@@ -1,4 +1,4 @@
-package me.jcomo.smtpd.command;
+package me.jcomo.smtpd.util;
 
 public class StringUtils {
     public static boolean isBlank(String str) {

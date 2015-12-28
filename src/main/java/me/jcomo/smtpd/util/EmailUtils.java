@@ -1,10 +1,10 @@
-package me.jcomo.smtpd;
+package me.jcomo.smtpd.util;
 
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static me.jcomo.smtpd.command.StringUtils.isBlank;
+import static me.jcomo.smtpd.util.StringUtils.isBlank;
 
 public class EmailUtils {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("<\\s*(\\S+)\\s*>");

@@ -1,4 +1,4 @@
-package me.jcomo.smtpd;
+package me.jcomo.smtpd.server;
 
 public enum ReplyCode {
     SERVICE_READY(220),

@@ -1,4 +1,4 @@
-package me.jcomo.smtpd;
+package me.jcomo.smtpd.server;
 
 public class Reply {
     private final ReplyCode code;

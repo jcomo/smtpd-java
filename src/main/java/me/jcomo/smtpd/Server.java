@@ -1,5 +1,7 @@
 package me.jcomo.smtpd;
 
+import me.jcomo.smtpd.server.SMTPConnection;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 

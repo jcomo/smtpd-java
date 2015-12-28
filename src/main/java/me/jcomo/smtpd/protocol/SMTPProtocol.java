@@ -1,4 +1,4 @@
-package me.jcomo.smtpd;
+package me.jcomo.smtpd.protocol;
 
 import me.jcomo.smtpd.command.Command;
 

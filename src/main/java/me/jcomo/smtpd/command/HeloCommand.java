@@ -23,7 +23,7 @@ public class HeloCommand implements Command {
 
         String domain = args[1];
         session.setDomain(domain);
-        session.sendReply(new Reply(ReplyCode.OK, "HELO " + domain));
+        session.sendReply(new Reply(ReplyCode.OK, "HELO localhost"));
         return true;
     }
 

@@ -12,4 +12,31 @@ public class Reply {
     public String render() {
         return code.getValue() + " " + message;
     }
+
+    @Override
+    public String toString() {
+        return "Reply{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Reply reply = (Reply) o;
+
+        if (code != reply.code) return false;
+        return message.equals(reply.message);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = code.hashCode();
+        result = 31 * result + message.hashCode();
+        return result;
+    }
 }

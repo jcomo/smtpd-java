@@ -6,9 +6,11 @@ import me.jcomo.smtpd.mailer.SimpleFileMailer;
 import me.jcomo.smtpd.mailer.FileBlobFactory;
 import me.jcomo.smtpd.message.SimpleMessageBuffer;
 import me.jcomo.smtpd.protocol.SMTPProtocol;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 
 public class SMTPConnection implements Runnable {
     private Socket socket;
@@ -36,8 +38,10 @@ public class SMTPConnection implements Runnable {
                 try {
                     Command command = commands.getCommand(line);
                     protocol.transition(command);
-                } catch (IllegalArgumentException e) {
+                } catch (NoSuchElementException e) {
                     session.sendReply(new Reply(ReplyCode.UNKNOWN, "unrecognized command"));
+                } catch (NotImplementedException e) {
+                    session.sendReply(new Reply(ReplyCode.NOT_IMPLEMENTED, "not implemented"));
                 } catch (IllegalStateException e) {
                     session.sendReply(new Reply(ReplyCode.BAD_SEQUENCE, "bad command sequence"));
                 }

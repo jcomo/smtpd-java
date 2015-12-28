@@ -1,8 +1,6 @@
 package me.jcomo.smtpd;
 
-import me.jcomo.smtpd.command.Command;
-
-public interface StateMachine {
-    void transition(Command command);
+public interface StateMachine<T> {
+    void transition(T command);
     boolean isTerminated();
 }

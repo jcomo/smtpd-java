@@ -1,6 +1,10 @@
 package me.jcomo.smtpd.command;
 
+import me.jcomo.smtpd.Reply;
+import me.jcomo.smtpd.ReplyCode;
 import me.jcomo.smtpd.Session;
+
+import static me.jcomo.smtpd.command.StringUtils.isBlank;
 
 public class RcptCommand implements Command {
     private static final String RCPT_TO = "RCPT TO:";
@@ -17,19 +21,19 @@ public class RcptCommand implements Command {
     public boolean execute() {
         String recipient = getRecipient();
         if (null == recipient) {
-            session.sendResponse("440 bad to");
+            session.sendReply(new Reply(ReplyCode.SYNTAX_ERROR, "Syntax: RCPT TO: <address>"));
             return false;
         }
 
         session.addRecipient(recipient);
-        session.sendResponse("250 OK to " + recipient);
+        session.sendReply(new Reply(ReplyCode.OK, "OK"));
         return true;
     }
 
     private String getRecipient() {
-        if (line.startsWith(RCPT_TO)) {
+        if (line.toUpperCase().startsWith(RCPT_TO)) {
             String recipient = line.substring(RCPT_TO.length());
-            if (!"".equals(recipient)) {
+            if (!isBlank(recipient)) {
                 return recipient;
             }
         }

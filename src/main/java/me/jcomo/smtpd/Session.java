@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 public class Session {
+    private String domain;
     private PrintWriter output;
     private BufferedReader input;
     private Envelope envelope;
@@ -13,9 +14,13 @@ public class Session {
         this.input = input;
     }
 
-    public void sendResponse(String response) {
-        output.println(response);
+    public void sendReply(Reply reply) {
+        output.println(reply.render());
         output.flush();
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
     public void setSender(String sender) {

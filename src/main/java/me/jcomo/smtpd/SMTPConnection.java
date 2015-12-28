@@ -25,23 +25,23 @@ public class SMTPConnection implements Runnable {
             SMTPProtocol protocol = new SMTPProtocol();
             CommandFactory commands = new CommandFactory(session, in);
 
-            session.sendResponse("220 localhost Simple Mail Transfer Service Ready");
+            session.sendReply(new Reply(ReplyCode.SERVICE_READY,
+                    "localhost Simple Mail Transfer Service Ready"));
 
             String line;
             while ((line = in.readLine()) != null) {
-                Command command = commands.getCommand(line);
-                if (command != null) {
-                    try {
-                        protocol.transition(command);
-                    } catch (IllegalStateException e) {
-                        session.sendResponse("503 Bad sequence of commands");
-                    }
-                } else {
-                    session.sendResponse("500 Command unrecognized");
+                try {
+                    Command command = commands.getCommand(line);
+                    protocol.transition(command);
+                } catch (IllegalArgumentException e) {
+                    session.sendReply(new Reply(ReplyCode.UNKNOWN, "unrecognized command"));
+                } catch (IllegalStateException e) {
+                    session.sendReply(new Reply(ReplyCode.BAD_SEQUENCE, "bad command sequence"));
                 }
 
                 if (protocol.isTerminated()) {
-                    session.sendResponse("221 localhost Service closing transmission channel");
+                    session.sendReply(new Reply(ReplyCode.SERVICE_CLOSING,
+                            "localhost Service closing transmission channel"));
                     break;
                 }
             }

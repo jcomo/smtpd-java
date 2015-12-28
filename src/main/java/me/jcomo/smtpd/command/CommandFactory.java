@@ -5,8 +5,10 @@ import me.jcomo.smtpd.Session;
 import java.io.*;
 
 public class CommandFactory {
-    private Session session;
-    private BufferedReader inputStream;
+    private static final int COMMAND_NAME_LENGTH = 4;
+
+    private final Session session;
+    private final BufferedReader inputStream;
 
     public CommandFactory(Session session, BufferedReader inputStream) {
         this.session = session;
@@ -14,19 +16,26 @@ public class CommandFactory {
     }
 
     public Command getCommand(String line) {
-        // TODO: error checking
-        String commandName = line.split(" ")[0];
+        switch (commandName(line)) {
+            case "HELO":
+                return new HeloCommand(session, line);
+            case "MAIL":
+                return new MailCommand(session, line);
+            case "RCPT":
+                return new RcptCommand(session, line);
+            case "QUIT":
+                return new QuitCommand();
+            default:
+                throw new IllegalArgumentException("No command found for: " + line);
+        }
+    }
 
-        if (commandName.startsWith("HELO")) {
-            return new HeloCommand(session, line);
-        } else if (commandName.startsWith("MAIL")) {
-            return new MailCommand(session, line);
-        } else if (commandName.startsWith("RCPT")) {
-            return new RcptCommand(session, line);
-        } else if (commandName.startsWith("QUIT")) {
-            return new QuitCommand();
+    private String commandName(String line) {
+        String name = "";
+        if (line.length() >= COMMAND_NAME_LENGTH) {
+            name = line.substring(0, COMMAND_NAME_LENGTH);
         }
 
-        return null;
+        return name.toUpperCase();
     }
 }

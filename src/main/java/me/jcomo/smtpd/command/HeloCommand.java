@@ -1,10 +1,12 @@
 package me.jcomo.smtpd.command;
 
+import me.jcomo.smtpd.Reply;
+import me.jcomo.smtpd.ReplyCode;
 import me.jcomo.smtpd.Session;
 
 public class HeloCommand implements Command {
-    private Session session;
-    private String line;
+    private final Session session;
+    private final String line;
 
     public HeloCommand(Session session, String line) {
         this.session = session;
@@ -13,13 +15,24 @@ public class HeloCommand implements Command {
 
     @Override
     public boolean execute() {
-        // TODO: check for server arg
-        session.sendResponse("250 HELO");
+        String[] args = getArgs();
+        if (args.length < 2) {
+            session.sendReply(new Reply(ReplyCode.SYNTAX_ERROR, "Syntax: HELO <domain>"));
+            return false;
+        }
+
+        String domain = args[1];
+        session.setDomain(domain);
+        session.sendReply(new Reply(ReplyCode.OK, "HELO " + domain));
         return true;
     }
 
     @Override
     public String getName() {
         return "HELO";
+    }
+
+    private String[] getArgs() {
+        return line.split("\\s+");
     }
 }

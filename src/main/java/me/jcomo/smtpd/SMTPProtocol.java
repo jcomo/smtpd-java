@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class SMTPProtocol implements StateMachine {
+public class SMTPProtocol implements StateMachine<Command> {
     private static Map<State, Map<String, State>> transitions = new HashMap<>();
     private static Set<String> unsequencedCommands = new HashSet<>();
 

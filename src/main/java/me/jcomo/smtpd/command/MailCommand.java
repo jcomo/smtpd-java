@@ -1,6 +1,10 @@
 package me.jcomo.smtpd.command;
 
+import me.jcomo.smtpd.Reply;
+import me.jcomo.smtpd.ReplyCode;
 import me.jcomo.smtpd.Session;
+
+import static me.jcomo.smtpd.command.StringUtils.isBlank;
 
 public class MailCommand implements Command {
     private static final String MAIL_FROM = "MAIL FROM:";
@@ -17,20 +21,19 @@ public class MailCommand implements Command {
     public boolean execute() {
         String sender = getSender();
         if (null == sender) {
-            // TODO: whats the right error code here?
-            session.sendResponse("440 Bad from");
+            session.sendReply(new Reply(ReplyCode.SYNTAX_ERROR, "Syntax: MAIL FROM: <address>"));
             return false;
         }
 
         session.setSender(sender);
-        session.sendResponse("250 OK from " + sender);
+        session.sendReply(new Reply(ReplyCode.OK, "OK"));
         return true;
     }
 
     private String getSender() {
-        if (line.startsWith(MAIL_FROM)) {
+        if (line.toUpperCase().startsWith(MAIL_FROM)) {
             String sender = line.substring(MAIL_FROM.length());
-            if (!"".equals(sender)) {
+            if (!isBlank(sender)) {
                 return sender;
             }
         }

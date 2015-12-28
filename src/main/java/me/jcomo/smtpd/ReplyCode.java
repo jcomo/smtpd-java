@@ -6,7 +6,8 @@ public enum ReplyCode {
     OK(250),
     UNKNOWN(500),
     SYNTAX_ERROR(501),
-    BAD_SEQUENCE(503);
+    BAD_SEQUENCE(503),
+    INVALID_MAILBOX_SYNTAX(553);
 
     private final int value;
 

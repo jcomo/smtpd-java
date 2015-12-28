@@ -4,5 +4,6 @@ public interface MessageBuffer {
     void setSender(String sender);
     void addRecipient(String recipient);
     void receiveData();
+    void reset();
     void done();
 }

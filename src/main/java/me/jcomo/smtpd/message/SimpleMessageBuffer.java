@@ -1,5 +1,7 @@
 package me.jcomo.smtpd.message;
 
+import me.jcomo.smtpd.mailer.Mailer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,10 +10,15 @@ import java.util.List;
 public class SimpleMessageBuffer implements MessageBuffer {
     private String sender;
     private final List<String> recipients = new ArrayList<>();
-    private final BufferedReader buf;
 
-    public SimpleMessageBuffer(BufferedReader buf) {
+    private final BufferedReader buf;
+    private final StringBuilder builder = new StringBuilder();
+
+    private final Mailer mailer;
+
+    public SimpleMessageBuffer(BufferedReader buf, Mailer mailer) {
         this.buf = buf;
+        this.mailer = mailer;
     }
 
     @Override
@@ -29,19 +36,31 @@ public class SimpleMessageBuffer implements MessageBuffer {
         String line;
         try {
             while ((line = buf.readLine()) != null) {
-                System.out.println(line);
                 if (".".equals(line)) {
-                    System.out.println("DONE");
                     break;
                 }
+
+                builder.append(line);
+                builder.append("\n");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    public void reset() {
+        sender = null;
+        recipients.clear();
+        builder.setLength(0);
+    }
+
     @Override
     public void done() {
+        String mailBody = builder.toString();
+        for (String recipient : recipients) {
+            mailer.send(sender, recipient, mailBody);
+        }
 
+        reset();
     }
 }

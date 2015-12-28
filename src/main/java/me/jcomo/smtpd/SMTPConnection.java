@@ -18,12 +18,12 @@ public class SMTPConnection implements Runnable {
 
     public void run() {
         try (
-                PrintWriter out = new PrintWriter(socket.getOutputStream());
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
+                final PrintWriter out = new PrintWriter(socket.getOutputStream());
+                final BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
         ) {
-            Session session = new Session(out, in);
-            SMTPProtocol protocol = new SMTPProtocol();
-            CommandFactory commands = new CommandFactory(session, in);
+            final Session session = new Session(out, in);
+            final SMTPProtocol protocol = new SMTPProtocol();
+            final CommandFactory commands = new CommandFactory(session);
 
             session.sendReply(new Reply(ReplyCode.SERVICE_READY,
                     "localhost Simple Mail Transfer Service Ready"));

@@ -4,6 +4,7 @@ public enum ReplyCode {
     SERVICE_READY(220),
     SERVICE_CLOSING(221),
     OK(250),
+    DATA_START(354),
     UNKNOWN(500),
     SYNTAX_ERROR(501),
     BAD_SEQUENCE(503),

@@ -14,6 +14,10 @@ public class Session {
         this.input = input;
     }
 
+    public BufferedReader getInput() {
+        return input;
+    }
+
     public void sendReply(Reply reply) {
         output.println(reply.render());
         output.flush();

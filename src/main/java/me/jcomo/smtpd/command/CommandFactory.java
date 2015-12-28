@@ -2,17 +2,13 @@ package me.jcomo.smtpd.command;
 
 import me.jcomo.smtpd.Session;
 
-import java.io.*;
-
 public class CommandFactory {
     private static final int COMMAND_NAME_LENGTH = 4;
 
     private final Session session;
-    private final BufferedReader inputStream;
 
-    public CommandFactory(Session session, BufferedReader inputStream) {
+    public CommandFactory(Session session) {
         this.session = session;
-        this.inputStream = inputStream;
     }
 
     public Command getCommand(String line) {
@@ -23,6 +19,12 @@ public class CommandFactory {
                 return new MailCommand(session, line);
             case "RCPT":
                 return new RcptCommand(session, line);
+            case "DATA":
+                return new DataCommand(session, line);
+            case "RSET":
+                return new RsetCommand(session);
+            case "NOOP":
+                return new NoopCommand(session);
             case "QUIT":
                 return new QuitCommand();
             default:

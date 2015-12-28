@@ -4,6 +4,9 @@ import me.jcomo.smtpd.Reply;
 import me.jcomo.smtpd.ReplyCode;
 import me.jcomo.smtpd.Session;
 
+import java.util.Optional;
+
+import static me.jcomo.smtpd.EmailUtils.parseEmailAddress;
 import static me.jcomo.smtpd.command.StringUtils.isBlank;
 
 public class RcptCommand implements Command {
@@ -19,22 +22,29 @@ public class RcptCommand implements Command {
 
     @Override
     public boolean execute() {
-        String recipient = getRecipient();
-        if (null == recipient) {
+        String address = getRawAddress();
+        if (null == address) {
             session.sendReply(new Reply(ReplyCode.SYNTAX_ERROR, "Syntax: RCPT TO: <address>"));
             return false;
         }
 
-        session.addRecipient(recipient);
+        Optional<String> recipient = parseEmailAddress(getRawAddress());
+        if (!recipient.isPresent()) {
+            session.sendReply(new Reply(ReplyCode.INVALID_MAILBOX_SYNTAX,
+                    "invalid email address: " + address));
+            return false;
+        }
+
+        session.addRecipient(recipient.get());
         session.sendReply(new Reply(ReplyCode.OK, "OK"));
         return true;
     }
 
-    private String getRecipient() {
+    private String getRawAddress() {
         if (line.toUpperCase().startsWith(RCPT_TO)) {
             String recipient = line.substring(RCPT_TO.length());
             if (!isBlank(recipient)) {
-                return recipient;
+                return recipient.trim();
             }
         }
 

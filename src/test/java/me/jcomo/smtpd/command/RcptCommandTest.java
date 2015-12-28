@@ -9,7 +9,7 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-public class MailCommandTest {
+public class RcptCommandTest {
     private final Session session = mock(Session.class);
 
     @After
@@ -17,54 +17,53 @@ public class MailCommandTest {
         reset(session);
     }
 
-    public void assertInvalidMailSyntax(String commandStr) {
-        Command command = new MailCommand(session, commandStr);
+    public void assertInvalidRcptSyntax(String commandStr) {
+        Command command = new RcptCommand(session, commandStr);
 
         boolean succeeded = command.execute();
 
         assertThat(succeeded).isFalse();
         verify(session, only()).sendReply(new Reply(ReplyCode.SYNTAX_ERROR,
-                "Syntax: MAIL FROM: <address>"));
+                "Syntax: RCPT TO: <address>"));
 
         reset(session);
     }
 
     @Test
     public void testInvalidSyntaxRepliesWithError() throws Exception {
-        assertInvalidMailSyntax("MAIL");
-        assertInvalidMailSyntax("MAIL FROM someone");
-        assertInvalidMailSyntax("MAIL TO: someone");
+        assertInvalidRcptSyntax("RCPT");
+        assertInvalidRcptSyntax("RCPT TO someone");
+        assertInvalidRcptSyntax("RCPT FROM: someone");
     }
 
     @Test
     public void testInvalidEmailRepliesWithError() throws Exception {
-        Command command = new MailCommand(session, "MAIL FROM: mail.com");
+        Command command = new RcptCommand(session, "RCPT TO: mail.com");
 
         boolean succeeded = command.execute();
 
         assertThat(succeeded).isFalse();
-        verify(session).sendReply(new Reply(ReplyCode.INVALID_MAILBOX_SYNTAX,
-                "invalid email address: mail.com"));
+        verify(session, only()).sendReply(new Reply(ReplyCode.INVALID_MAILBOX_SYNTAX, "invalid email address: mail.com"));
     }
 
     @Test
-    public void testInvalidEmailDoesNotSetSenderForSession() throws Exception {
-        Command command = new MailCommand(session, "MAIL FROM: <mail.com>");
+    public void testInvalidEmailDoesNotAddRecipientForSession() throws Exception {
+        Command command = new RcptCommand(session, "RCPT TO: <mail.com>");
 
         boolean succeeded = command.execute();
 
         assertThat(succeeded).isFalse();
-        verify(session, never()).setSender(any());
+        verify(session, never()).addRecipient(any());
     }
 
     @Test
-    public void testValidEmailSetsSendersForSession() throws Exception {
-        Command command = new MailCommand(session, "MAIL FROM: <mail@example.com>");
+    public void testValidEmailAddsRecipientForSession() throws Exception {
+        Command command = new RcptCommand(session, "RCPT TO: <mail@example.com>");
 
         boolean succeeded = command.execute();
 
         assertThat(succeeded).isTrue();
-        verify(session).setSender("mail@example.com");
+        verify(session).addRecipient("mail@example.com");
         verify(session).sendReply(new Reply(ReplyCode.OK, "OK"));
     }
 }

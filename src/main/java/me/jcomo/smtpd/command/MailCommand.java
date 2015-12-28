@@ -31,7 +31,7 @@ public class MailCommand implements Command {
         Optional<String> sender = parseEmailAddress(address);
         if (!sender.isPresent()) {
             session.sendReply(new Reply(ReplyCode.INVALID_MAILBOX_SYNTAX,
-                    "invalid email address <" + address + ">"));
+                    "invalid email address: " + address));
             return false;
         }
 

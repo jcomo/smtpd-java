@@ -16,7 +16,6 @@ public class Session {
 
     public void sendReply(Reply reply) {
         output.print(reply.render());
-        output.print("\r\n");
         output.flush();
     }
 

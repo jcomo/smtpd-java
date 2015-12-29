@@ -10,7 +10,7 @@ public class Reply {
     }
 
     public String render() {
-        return code.getValue() + " " + message;
+        return code.getValue() + " " + message + "\r\n";
     }
 
     @Override

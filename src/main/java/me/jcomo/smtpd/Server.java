@@ -1,6 +1,5 @@
 package me.jcomo.smtpd;
 
-import me.jcomo.config.Configuration;
 import me.jcomo.smtpd.server.SMTPConnection;
 
 import java.io.File;

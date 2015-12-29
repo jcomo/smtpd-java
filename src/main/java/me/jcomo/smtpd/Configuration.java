@@ -1,4 +1,4 @@
-package me.jcomo.config;
+package me.jcomo.smtpd;
 
 import java.io.File;
 import java.io.FileInputStream;

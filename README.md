@@ -12,6 +12,8 @@ Auth and TLS support have not been implemented yet.
 There is currently no jar that has been released but it has very few dependencies and can be built from source using maven.
 
 ```
+git clone https://github.com/jcomo/smtpd
+cd smtpd
 mvn package
 java -jar target/smtpd-1.0-SNAPSHOT.jar
 ```

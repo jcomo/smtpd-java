@@ -1,7 +1,6 @@
 package me.jcomo.smtpd.command;
 
 import me.jcomo.smtpd.server.Session;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -59,7 +58,7 @@ public class CommandFactory {
 
     private RuntimeException errorForUnspecifiedCommand(String name) {
         if (unimplementedCommands.contains(name)) {
-            return new NotImplementedException();
+            return new IllegalArgumentException("Not implemented: " + name);
         } else {
             return new NoSuchElementException("No element found: " + name);
         }

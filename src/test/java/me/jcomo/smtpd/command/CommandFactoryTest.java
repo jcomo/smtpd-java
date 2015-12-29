@@ -2,7 +2,6 @@ package me.jcomo.smtpd.command;
 
 import me.jcomo.smtpd.server.Session;
 import org.junit.Test;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.NoSuchElementException;
 
@@ -59,7 +58,7 @@ public class CommandFactoryTest {
         assertCreatesCommandType("HeLo", HeloCommand.class);
     }
 
-    @Test(expected = NotImplementedException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testThrowsForUnimplementedCommand() throws Exception {
         factory.getCommand("EHLO");
     }

@@ -5,7 +5,6 @@ import me.jcomo.smtpd.command.CommandFactory;
 import me.jcomo.smtpd.mailer.DebugFileMailer;
 import me.jcomo.smtpd.message.SimpleMessageBuffer;
 import me.jcomo.smtpd.protocol.SMTPProtocol;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,7 +48,7 @@ public class SMTPConnection implements Runnable {
                     protocol.transition(command);
                 } catch (NoSuchElementException e) {
                     session.sendReply(new Reply(ReplyCode.UNKNOWN, "unrecognized command"));
-                } catch (NotImplementedException e) {
+                } catch (IllegalArgumentException e) {
                     session.sendReply(new Reply(ReplyCode.NOT_IMPLEMENTED, "not implemented"));
                 } catch (IllegalStateException e) {
                     session.sendReply(new Reply(ReplyCode.BAD_SEQUENCE, "bad command sequence"));

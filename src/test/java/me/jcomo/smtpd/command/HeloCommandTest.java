@@ -29,6 +29,7 @@ public class HeloCommandTest {
 
     @Test
     public void testSetsSessionDomainOnSuccess() throws Exception {
+        when(session.getHostname()).thenReturn("localhost");
         Command command = new HeloCommand(session, "HELO domain");
 
         boolean succeeded = command.execute();

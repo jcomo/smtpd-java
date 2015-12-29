@@ -13,7 +13,7 @@ public class RsetCommand implements Command {
 
     @Override
     public boolean execute() {
-        session.resetMailTransaction();
+        session.getMessageBuffer().reset();
         session.sendReply(new Reply(ReplyCode.OK, "reset"));
         return true;
     }

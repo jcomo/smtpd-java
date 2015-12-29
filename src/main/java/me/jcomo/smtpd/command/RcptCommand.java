@@ -35,7 +35,7 @@ public class RcptCommand implements Command {
             return false;
         }
 
-        session.addRecipient(recipient.get());
+        session.getMessageBuffer().addRecipient(recipient.get());
         session.sendReply(new Reply(ReplyCode.OK, "OK"));
         return true;
     }

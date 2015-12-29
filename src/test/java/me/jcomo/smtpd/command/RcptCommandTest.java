@@ -1,16 +1,24 @@
 package me.jcomo.smtpd.command;
 
+import me.jcomo.smtpd.message.MessageBuffer;
 import me.jcomo.smtpd.server.Reply;
 import me.jcomo.smtpd.server.ReplyCode;
 import me.jcomo.smtpd.server.Session;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 public class RcptCommandTest {
+    private final MessageBuffer buffer = mock(MessageBuffer.class);
     private final Session session = mock(Session.class);
+
+    @Before
+    public void setUp() throws Exception {
+        when(session.getMessageBuffer()).thenReturn(buffer);
+    }
 
     @After
     public void tearDown() throws Exception {
@@ -53,7 +61,7 @@ public class RcptCommandTest {
         boolean succeeded = command.execute();
 
         assertThat(succeeded).isFalse();
-        verify(session, never()).addRecipient(any());
+        verify(buffer, never()).addRecipient(any());
     }
 
     @Test
@@ -63,7 +71,7 @@ public class RcptCommandTest {
         boolean succeeded = command.execute();
 
         assertThat(succeeded).isTrue();
-        verify(session).addRecipient("mail@example.com");
+        verify(buffer).addRecipient("mail@example.com");
         verify(session).sendReply(new Reply(ReplyCode.OK, "OK"));
     }
 }

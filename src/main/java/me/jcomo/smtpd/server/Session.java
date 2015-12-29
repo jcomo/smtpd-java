@@ -23,20 +23,7 @@ public class Session {
         this.domain = domain;
     }
 
-    public void setSender(String sender) {
-        messageBuffer.setSender(sender);
-    }
-
-    public void addRecipient(String recipient) {
-        messageBuffer.addRecipient(recipient);
-    }
-
-    public void sendData() {
-        messageBuffer.receiveData();
-        messageBuffer.done();
-    }
-
-    public void resetMailTransaction() {
-        messageBuffer.reset();
+    public MessageBuffer getMessageBuffer() {
+        return messageBuffer;
     }
 }

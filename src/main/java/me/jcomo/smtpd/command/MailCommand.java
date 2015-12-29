@@ -35,7 +35,7 @@ public class MailCommand implements Command {
             return false;
         }
 
-        session.setSender(sender.get());
+        session.getMessageBuffer().setSender(sender.get());
         session.sendReply(new Reply(ReplyCode.OK, "OK"));
         return true;
     }

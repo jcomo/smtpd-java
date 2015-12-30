@@ -35,12 +35,13 @@ public class SMTPProtocol implements StateMachine<Command> {
         transitions.put(State.HELO, heloTransitions);
         transitions.put(State.MAIL, mailTransitions);
         transitions.put(State.RCPT, rcptTransitions);
+        transitions.put(State.QUIT, new HashMap<>());
 
         unsequencedCommands.add("HELP");
         unsequencedCommands.add("NOOP");
     }
 
-    private State state = State.INIT;
+    State state = State.INIT;
 
     public void transition(Command command) {
         if (commandIsStateless(command)) {

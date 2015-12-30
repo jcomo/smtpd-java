@@ -35,7 +35,7 @@ public class Configuration {
     }
 
     private <T> T getOpt(String key, Function<String, T> f) {
-        return Optional.ofNullable(props.getProperty(key)).map(f).orElseThrow(RuntimeException::new);
+        return Optional.ofNullable(props.getProperty(key)).map(f).orElseThrow(NoSuchElementException::new);
     }
 
     private <T> T getDefaultOpt(String key, T defaultValue, Function<String, T> f) {
@@ -57,6 +57,10 @@ public class Configuration {
         }
 
         public Configuration build() throws IOException {
+            if (files.isEmpty() && propertyPrefixes.isEmpty()) {
+                throw new IllegalStateException("Must supply at least one file"
+                        + " or one system property prefix to build configuration");
+            }
             Properties props = new Properties();
             for (File file : files) {
                 props.load(new FileInputStream(file));

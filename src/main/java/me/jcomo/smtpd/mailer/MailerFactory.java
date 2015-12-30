@@ -34,7 +34,7 @@ public class MailerFactory {
     }
 
     private Mailer createFileMailer() {
-        String mailDirName = config.get("mailer.file.directory", "/tmp/smtpd");
+        String mailDirName = config.get("mailer.file.directory", "/tmp/mail");
         File mailDir = createDirectoryOrFail(mailDirName);
         FileFactory factory = new FileFactory(mailDir);
         return new FileMailer(factory);

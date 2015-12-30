@@ -29,7 +29,9 @@ A properties file can be specified as the first positional argument to the progr
 | ------------------------- | --------------------------- | ----------------------------------------------------------------------------- |
 | `server.port`             | 8025                        | port to run the server on                                                     |
 | `server.hostname`         | contents of `/etc/hostname` | hostname of the mail server                                                   |
+| `server.shutdown.timeout` | 5                           | time in seconds to wait for threads to finish before shutting down forcefully |
 | `pool.connections.core`   | 0                           | number of unused threads to keep in the server thread pool                    |
 | `pool.connections.max`    | 1024                        | max number of simultaneous connections to handle                              |
 | `pool.idle.timeout`       | 60                          | time in seconds until idle threads are destroyed                              |
-| `server.shutdown.timeout` | 5                           | time in seconds to wait for threads to finish before shutting down forcefully |
+| `mailer.type`             | `debug`                     | the type of Mailer to use for sending mail                                    |
+| `mailer.file.directory`   | `/tmp/mail`                 | the directory to use for mail when using the file Mailer                      |

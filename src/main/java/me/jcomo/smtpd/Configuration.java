@@ -61,13 +61,24 @@ public class Configuration {
                 throw new IllegalStateException("Must supply at least one file"
                         + " or one system property prefix to build configuration");
             }
+
             Properties props = new Properties();
+
+            loadPropertiesFromFiles(props);
+            loadSystemProperties(props);
+
+            return new Configuration(props);
+        }
+
+        private void loadPropertiesFromFiles(Properties props) throws IOException {
             for (File file : files) {
                 props.load(new FileInputStream(file));
             }
+        }
 
+        private void loadSystemProperties(Properties props) {
             Properties systemProps = System.getProperties();
-            for (String prefix : propertyPrefixes) {
+            propertyPrefixes.forEach((prefix) -> {
                 Enumeration iter = systemProps.propertyNames();
                 while (iter.hasMoreElements()) {
                     String key = (String) iter.nextElement();
@@ -76,9 +87,7 @@ public class Configuration {
                         props.put(normalKey, systemProps.getProperty(key));
                     }
                 }
-            }
-
-            return new Configuration(props);
+            });
         }
     }
 }

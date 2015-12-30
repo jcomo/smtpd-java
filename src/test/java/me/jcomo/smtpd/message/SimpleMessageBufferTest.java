@@ -55,7 +55,7 @@ public class SimpleMessageBufferTest {
         buffer.receiveData();
         buffer.done();
 
-        String expected = "Some text\nFor the message\n";
+        String expected = "Some text\nFor the message";
         verify(mailer).send(anyString(), anyString(), eq(expected));
     }
 

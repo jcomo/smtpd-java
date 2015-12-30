@@ -1,5 +1,7 @@
 package me.jcomo.smtpd;
 
+import me.jcomo.smtpd.mailer.Mailer;
+import me.jcomo.smtpd.mailer.MailerFactory;
 import me.jcomo.smtpd.server.SMTPConnection;
 
 import java.io.File;
@@ -43,13 +45,14 @@ public class Server {
         final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(
                 coreConnections, maxConnections, idleTimeout, TimeUnit.SECONDS, new SynchronousQueue<>());
         final ServerSocket server = new ServerSocket(port);
+        final Mailer mailer = MailerFactory.mailerFromConfiguration(config);
 
         registerShutdownHook(threadPool, shutdownTimeout);
         logger.info("SMTP server " + hostname + " listening on port " + port);
 
         while (true) {
             final Socket socket = server.accept();
-            threadPool.submit(new SMTPConnection(hostname, socket));
+            threadPool.submit(new SMTPConnection(hostname, socket, mailer));
         }
     }
 

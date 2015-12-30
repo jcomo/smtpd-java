@@ -36,7 +36,8 @@ public class SimpleMessageBuffer implements MessageBuffer {
         String line;
         try {
             while ((line = buf.readLine()) != null) {
-                if (".".equals(line)) {
+                if (endOfMessage(line)) {
+                    removeTrailingNewline();
                     break;
                 }
 
@@ -46,6 +47,14 @@ public class SimpleMessageBuffer implements MessageBuffer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private boolean endOfMessage(String line) {
+        return ".".equals(line);
+    }
+
+    private void removeTrailingNewline() {
+        builder.setLength(builder.length() - 1);
     }
 
     public void reset() {

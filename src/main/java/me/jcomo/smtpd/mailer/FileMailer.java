@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-public class SimpleFileMailer implements Mailer {
-    private final FileBlobFactory fileFactory;
+public class FileMailer implements Mailer {
+    private final FileFactory fileFactory;
 
-    public SimpleFileMailer(FileBlobFactory fileFactory) {
+    public FileMailer(FileFactory fileFactory) {
         this.fileFactory = fileFactory;
     }
 

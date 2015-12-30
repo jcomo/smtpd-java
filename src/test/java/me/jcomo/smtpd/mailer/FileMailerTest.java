@@ -11,16 +11,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SimpleFileMailerTest {
+public class FileMailerTest {
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
 
     @Test
     public void testWritesMailToFile() throws Exception {
         File file = tempFolder.newFile("mail.dat");
-        FileBlobFactory factory = mock(FileBlobFactory.class);
+        FileFactory factory = mock(FileFactory.class);
         when(factory.createFile()).thenReturn(file);
-        SimpleFileMailer mailer = new SimpleFileMailer(factory);
+        FileMailer mailer = new FileMailer(factory);
 
         mailer.send("no-reply@example.com", "person@example.com", "data\r\nhere");
 
@@ -38,10 +38,10 @@ public class SimpleFileMailerTest {
         File file = mock(File.class);
         when(file.getPath()).thenThrow(new FileNotFoundException());
 
-        FileBlobFactory factory = mock(FileBlobFactory.class);
+        FileFactory factory = mock(FileFactory.class);
         when(factory.createFile()).thenReturn(file);
 
-        SimpleFileMailer mailer = new SimpleFileMailer(factory);
+        FileMailer mailer = new FileMailer(factory);
 
         mailer.send("no-reply@example.com", "person@example.com", "data");
     }

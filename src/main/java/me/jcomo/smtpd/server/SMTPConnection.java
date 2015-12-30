@@ -2,7 +2,7 @@ package me.jcomo.smtpd.server;
 
 import me.jcomo.smtpd.command.Command;
 import me.jcomo.smtpd.command.CommandFactory;
-import me.jcomo.smtpd.mailer.DebugFileMailer;
+import me.jcomo.smtpd.mailer.Mailer;
 import me.jcomo.smtpd.message.SimpleMessageBuffer;
 import me.jcomo.smtpd.protocol.SMTPProtocol;
 
@@ -19,12 +19,15 @@ import static me.jcomo.smtpd.util.LogUtils.formatStackTrace;
 public class SMTPConnection implements Runnable {
     private static final Logger logger = Logger.getLogger(SMTPConnection.class.getName());
 
-    private String hostname;
-    private Socket socket;
+    private final String hostname;
+    private final Socket socket;
+    private final Mailer mailer;
+    private final SMTPProtocol protocol = new SMTPProtocol();
 
-    public SMTPConnection(String hostname, Socket socket) {
+    public SMTPConnection(String hostname, Socket socket, Mailer mailer) {
         this.hostname = hostname;
         this.socket = socket;
+        this.mailer = mailer;
     }
 
     public void run() {
@@ -32,8 +35,6 @@ public class SMTPConnection implements Runnable {
                 final PrintWriter out = new PrintWriter(socket.getOutputStream());
                 final BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
         ) {
-            final SMTPProtocol protocol = new SMTPProtocol();
-            final DebugFileMailer mailer = new DebugFileMailer(new PrintWriter(System.out));
             final SimpleMessageBuffer messageBuffer = new SimpleMessageBuffer(in, mailer);
             final Session session = new Session(hostname, out, messageBuffer);
             final CommandFactory commands = new CommandFactory(session);

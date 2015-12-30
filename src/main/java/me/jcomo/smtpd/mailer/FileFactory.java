@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-public class FileBlobFactory {
-    public final String baseDir;
+public class FileFactory {
+    public final File baseDir;
 
-    public FileBlobFactory(String baseDir) {
+    public FileFactory(File baseDir) {
         this.baseDir = baseDir;
     }
 

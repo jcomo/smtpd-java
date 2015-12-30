@@ -9,13 +9,10 @@ Auth and TLS support have not been implemented yet.
 
 ### Usage
 
-There is currently no jar that has been released but it has very few dependencies and can be built from source using maven.
+Download the [pre-release jar](https://github.com/jcomo/smtpd/releases/download/0.1/smtpd.jar).
 
 ```
-git clone https://github.com/jcomo/smtpd
-cd smtpd
-mvn package
-java -jar target/smtpd-1.0-SNAPSHOT.jar
+java -jar smtpd.jar
 ```
 
 To test it, you can point your mail client (such as Apple mail) to the address it is running on, or you can interact with it via telnet.
@@ -35,3 +32,10 @@ A properties file can be specified as the first positional argument to the progr
 | `pool.idle.timeout`       | 60                          | time in seconds until idle threads are destroyed                              |
 | `mailer.type`             | `debug`                     | the type of Mailer to use for sending mail                                    |
 | `mailer.file.directory`   | `/tmp/mail`                 | the directory to use for mail when using the file Mailer                      |
+
+To override this configuration with runtime values, you can use command line properties. All configuration values can be overridden
+by suppling the properties with the `smtpd.` prefix. For example, to override the port at runtime:
+
+```
+java -Dsmtpd.server.port=5025 -jar smtpd.jar
+```
